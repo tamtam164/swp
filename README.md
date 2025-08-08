@@ -1,1 +1,1 @@
-# swp
+# swp means Single Web Pages
