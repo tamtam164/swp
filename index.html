@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>対話型SPA：日本の中小企業向け生成AI活用支援サービス市場分析</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm & Professional (Custom) -->
+    <!-- Application Structure Plan: The SPA is designed as a narrative journey for a potential client or stakeholder. It starts with the high-level market opportunity (Why now?), moves to the competitive landscape (Who's out there?), defines the customer's core problems (What are the pain points?), presents an interactive market price benchmark (What does it cost?), and concludes with the specific value proposition and pricing of "三方よしのAIT" (Why us?). This thematic, top-down structure is more persuasive and easier to digest than a direct 1:1 translation of the report's chapters. The key interaction is a tab-based system for exploring different service price benchmarks without overwhelming the user with multiple static charts. -->
+    <!-- Visualization & Content Choices: 
+        - Market Opportunity (SME Adoption): Goal: Inform. Method: Donut Chart (Chart.js). Interaction: None (static display). Justification: Instantly shows the huge untapped market (94.3%).
+        - Competitive Landscape: Goal: Organize. Method: HTML/CSS Flexbox diagram. Interaction: Highlight on hover. Justification: Clearly positions "三方よしのAIT" against other player types without using prohibited SVG/Mermaid.
+        - SME Challenges: Goal: Inform. Method: Icon-based cards (Unicode + HTML/CSS). Interaction: None. Justification: Quickly communicates the three core barriers in a visually engaging way.
+        - Price Benchmarks: Goal: Compare. Method: Interactive Bar Chart (Chart.js). Interaction: User clicks tabs (Quick Consult, Workshop, etc.) to dynamically update a single chart instance and its accompanying descriptive text. Justification: This is the core interactive element. It prevents clutter, encourages user engagement, and allows for direct comparison of data points within a consistent context.
+        - "三方よしのAIT" Pricing: Goal: Inform/Organize. Method: Interactive HTML Table. Interaction: Hover effects on rows, with a JS-powered filter to highlight prices by company size. Justification: Makes a dense data table scannable and allows users to focus on the information most relevant to them.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .nav-link:hover {
+            color: #0891b2;
+        }
+        .kpi-card {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+            border-top: 4px solid #0891b2;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+        }
+        .tab-button {
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        .tab-button.active {
+            color: #0891b2;
+            border-bottom-color: #0891b2;
+            font-weight: 700;
+        }
+        .price-table-row {
+            transition: background-color 0.2s;
+        }
+        .price-table-row:hover {
+            background-color: #f0f9ff;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <a href="#hero" class="text-xl font-bold text-cyan-700">三方よしのAIT 価格戦略SPA</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#opportunity" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">市場機会</a>
+                        <a href="#landscape" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">競合環境</a>
+                        <a href="#benchmark" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">価格分析</a>
+                        <a href="#strategy" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">価格戦略</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="bg-white py-20 sm:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-gray-900">データで読み解く、<br class="sm:hidden"><span class="text-cyan-600">生成AI支援サービス</span>の市場価格</h1>
+                <p class="mt-6 text-lg leading-8 text-gray-600 max-w-2xl mx-auto">この対話型アプリケーションは、日本の生成AI支援サービス市場を分析し、「三方よしのAIT」が中小企業の皆様に最適な価値を提供するための戦略的価格設定を探ります。</p>
+            </div>
+        </section>
+
+        <section id="opportunity" class="py-20 sm:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">未開拓の巨大な潜在市場</h2>
+                    <p class="mt-4 text-lg leading-8 text-gray-600">現在、生成AIを活用している中小企業はごく少数。しかし、その大多数が導入を検討しており、専門的サポートへの需要が急速に高まっています。</p>
+                </div>
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center">
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-xl font-bold text-center mb-4 text-gray-800">中小企業の生成AI活用状況</h3>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="smeAdoptionChart"></canvas>
+                        </div>
+                        <p class="mt-6 text-center text-gray-600">活用できている企業はわずか<span class="font-bold text-cyan-600 text-lg">5.7%</span>。残りの<span class="font-bold text-lg">94.3%</span>が、私たちの支援を待つ潜在顧客です。</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-xl font-bold text-center mb-4 text-gray-800">今後の活用意向 (未活用企業)</h3>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="smeInterestChart"></canvas>
+                        </div>
+                        <p class="mt-6 text-center text-gray-600">未活用企業の<span class="font-bold text-cyan-600 text-lg">約3割</span>が「今後活用を検討」。導入への強い関心が市場の成長を後押しします。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="landscape" class="bg-white py-20 sm:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">競合ひしめく市場での勝機</h2>
+                    <p class="mt-4 text-lg leading-8 text-gray-600">市場には様々なプレイヤーが存在しますが、それぞれターゲットと提供価値が異なります。「三方よしのAIT」は中小企業に寄り添う「伴走型パートナー」として独自の地位を築きます。</p>
+                </div>
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="border border-gray-200 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-gray-800">大手ITベンダー</h3>
+                        <p class="text-sm text-gray-500 mt-1">(日立, NTT等)</p>
+                        <p class="mt-4 text-gray-600">大企業向けに包括的なソリューションを提供。価格は数百万〜数千万円規模。</p>
+                    </div>
+                    <div class="border border-gray-200 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-gray-800">専門コンサルファーム</h3>
+                        <p class="text-sm text-gray-500 mt-1">(AI総研, キカガク等)</p>
+                        <p class="mt-4 text-gray-600">中堅・大企業向けに戦略策定やPoCを支援。価格は百万円〜数百万円規模。</p>
+                    </div>
+                    <div class="border-2 border-cyan-500 p-6 rounded-lg ring-4 ring-cyan-500/20 bg-cyan-50/50">
+                        <h3 class="text-xl font-bold text-cyan-700">フリーランス・小規模事業者</h3>
+                        <p class="text-sm text-cyan-600 font-semibold mt-1">(三方よしのAIT)</p>
+                        <p class="mt-4 text-gray-700 font-medium">中小企業に特化し、柔軟で機動的な伴走支援を提供。ここに最大の勝機があります。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="py-20 sm:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">中小企業が直面する「3つの壁」</h2>
+                    <p class="mt-4 text-lg leading-8 text-gray-600">私たちのサービスは、中小企業が生成AI導入で直面する具体的な課題を直接解決するために設計されています。</p>
+                </div>
+                <div class="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-8">
+                    <div class="kpi-card">
+                        <div class="text-5xl mb-4">🧠</div>
+                        <h3 class="text-2xl font-bold mb-2">知識の壁</h3>
+                        <p>「何から始めればいいかわからない」という最大の障壁。専門家による伴走支援で解決します。</p>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="text-5xl mb-4">💰</div>
+                        <h3 class="text-2xl font-bold mb-2">コストの壁</h3>
+                        <p>高額な投資への不安。補助金活用と費用対効果の高いプランで解決します。</p>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="text-5xl mb-4">🔒</div>
+                        <h3 class="text-2xl font-bold mb-2">安全性の壁</h3>
+                        <p>機密情報の漏洩リスク。安全な環境構築のノウハウを提供し解決します。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="benchmark" class="bg-white py-20 sm:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">対話型：市場価格ベンチマーク</h2>
+                    <p class="mt-4 text-lg leading-8 text-gray-600">下のタブをクリックして、サービスカテゴリごとの市場価格帯をインタラクティブに探ってみましょう。</p>
+                </div>
+                <div class="mt-12 max-w-4xl mx-auto">
+                    <div class="border-b border-gray-200">
+                        <nav class="-mb-px flex space-x-4 sm:space-x-8 justify-center" aria-label="Tabs">
+                            <button id="tab-consult" class="tab-button whitespace-nowrap py-4 px-1 text-sm sm:text-base font-medium text-gray-500 hover:text-cyan-600 active">クイック相談</button>
+                            <button id="tab-workshop" class="tab-button whitespace-nowrap py-4 px-1 text-sm sm:text-base font-medium text-gray-500 hover:text-cyan-600">ワークショップ</button>
+                            <button id="tab-project" class="tab-button whitespace-nowrap py-4 px-1 text-sm sm:text-base font-medium text-gray-500 hover:text-cyan-600">プロジェクト</button>
+                            <button id="tab-retainer" class="tab-button whitespace-nowrap py-4 px-1 text-sm sm:text-base font-medium text-gray-500 hover:text-cyan-600">定着サポート</button>
+                        </nav>
+                    </div>
+                    <div class="mt-8">
+                        <div id="benchmark-content" class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+                            <div class="lg:col-span-3">
+                                <div class="chart-container">
+                                    <canvas id="benchmarkChart"></canvas>
+                                </div>
+                            </div>
+                            <div id="benchmark-text" class="lg:col-span-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="strategy" class="py-20 sm:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">「三方よしのAIT」戦略的価格モデル</h2>
+                    <p class="mt-4 text-lg leading-8 text-gray-600">市場調査と中小企業の特性をふまえ、企業規模に応じた透明性の高い価格プランをご提案します。下のボタンで規模を選択すると、該当価格がハイライトされます。</p>
+                </div>
+                <div class="mt-12 flex justify-center space-x-2 sm:space-x-4 mb-8">
+                    <button class="size-filter-btn active" data-size="all">全規模</button>
+                    <button class="size-filter-btn" data-size="10">~10名</button>
+                    <button class="size-filter-btn" data-size="50">~50名</button>
+                    <button class="size-filter-btn" data-size="100">~100名</button>
+                    <button class="size-filter-btn" data-size="200">~200名</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table id="price-matrix" class="min-w-full bg-white shadow-lg rounded-lg overflow-hidden">
+                        <thead class="bg-gray-800 text-white">
+                            <tr>
+                                <th class="p-4 text-left text-sm font-semibold">サービスカテゴリ</th>
+                                <th class="p-4 text-center text-sm font-semibold" data-col-size="10">従業員10名以下</th>
+                                <th class="p-4 text-center text-sm font-semibold" data-col-size="50">従業員50名以下</th>
+                                <th class="p-4 text-center text-sm font-semibold" data-col-size="100">従業員100名以下</th>
+                                <th class="p-4 text-center text-sm font-semibold" data-col-size="200">従業員200名以下</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="price-table-row border-b border-gray-200">
+                                <td class="p-4 font-medium">AI活用クイック相談 <span class="block text-xs font-normal text-gray-500">(60分スポット)</span></td>
+                                <td class="p-4 text-center font-semibold text-gray-800" data-col-size="10">¥30,000</td>
+                                <td class="p-4 text-center font-semibold text-gray-800" data-col-size="50">¥40,000</td>
+                                <td class="p-4 text-center font-semibold text-gray-800" data-col-size="100">¥50,000</td>
+                                <td class="p-4 text-center font-semibold text-gray-800" data-col-size="200">¥60,000</td>
+                            </tr>
+                            <tr class="price-table-row border-b border-gray-200">
+                                <td class="p-4 font-medium">社内向けワークショップ <span class="block text-xs font-normal text-gray-500">(3時間カスタム)</span></td>
+                                <td class="p-4 text-center font-semibold text-gray-800" data-col-size="10">¥300,000</td>
+                                <td class="p-4 text-center font-semibold text-gray-800" data-col-size="50">¥450,000</td>
+                                <td class="p-4 text-center font-semibold text-gray-800" data-col-size="100">¥600,000</td>
+                                <td class="p-4 text-center font-semibold text-gray-800" data-col-size="200">¥800,000</td>
+                            </tr>
+                            <tr class="price-table-row border-b border-gray-200">
+                                <td class="p-4 font-medium">実務効率化プロジェクト <span class="block text-xs font-normal text-gray-500">(ピンポイント改善)</span></td>
+                                <td class="p-4 text-center font-semibold text-gray-800" data-col-size="10">¥400,000～</td>
+                                <td class="p-4 text-center font-semibold text-gray-800" data-col-size="50">¥800,000～</td>
+                                <td class="p-4 text-center font-semibold text-gray-800" data-col-size="100">¥1,200,000～</td>
+                                <td class="p-4 text-center font-semibold text-gray-800" data-col-size="200">¥2,000,000～</td>
+                            </tr>
+                            <tr class="price-table-row">
+                                <td class="p-4 font-medium">AI活用定着サポート <span class="block text-xs font-normal text-gray-500">(月額顧問)</span></td>
+                                <td class="p-4 text-center font-semibold text-gray-800" data-col-size="10">¥80,000/月</td>
+                                <td class="p-4 text-center font-semibold text-gray-800" data-col-size="50">¥150,000/月</td>
+                                <td class="p-4 text-center font-semibold text-gray-800" data-col-size="100">¥250,000/月</td>
+                                <td class="p-4 text-center font-semibold text-gray-800" data-col-size="200">¥400,000/月</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                 <p class="text-center mt-4 text-sm text-gray-500">※多くのプランでIT導入補助金等が活用でき、実質負担額を大幅に抑えることが可能です。</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto py-12 px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-lg font-semibold">三方よしのAIT</p>
+            <p class="mt-2 text-gray-400">貴社の成長を加速させる、信頼のAI活用パートナー。</p>
+        </div>
+    </footer>
+
+    <script>
+        const chartColors = {
+            primary: 'rgba(8, 145, 178, 0.7)', // cyan-600
+            primaryBorder: 'rgba(8, 145, 178, 1)',
+            secondary: 'rgba(100, 116, 139, 0.7)', // slate-500
+            secondaryBorder: 'rgba(100, 116, 139, 1)',
+            tertiary: 'rgba(245, 158, 11, 0.7)', // amber-500
+            tertiaryBorder: 'rgba(245, 158, 11, 1)',
+            background: 'rgba(241, 245, 249, 1)', // slate-100
+            white: '#FFFFFF'
+        };
+
+        const benchmarkData = {
+            consult: {
+                title: 'AI活用クイック相談',
+                description: '潜在顧客にとって最もハードルの低い入り口であり、信頼関係を構築するための重要な診断ツールです。専門家のレベルにより価格は大きく変動しますが、1時間あたり3万円〜10万円が相場です。',
+                chartData: {
+                    labels: ['マッチングプラットフォーム', '小規模コンサル', 'フリーランスコンサル'],
+                    datasets: [{
+                        label: '価格帯 (円/時間)',
+                        data: [30000, 75000, 65000],
+                        backgroundColor: [chartColors.primary, chartColors.secondary, chartColors.tertiary],
+                        borderColor: [chartColors.primaryBorder, chartColors.secondaryBorder, chartColors.tertiaryBorder],
+                        borderWidth: 1
+                    }]
+                }
+            },
+            workshop: {
+                title: '社内向けAI活用ワークショップ',
+                description: '全社的なAIリテラシー向上を目的とした人気のサービス。eラーニングは安価ですが、企業ごとに内容を調整するカスタム研修は、高い付加価値を提供します。',
+                chartData: {
+                    labels: ['eラーニング (1人あたり)', 'カスタム研修 (1グループ)'],
+                    datasets: [{
+                        label: '価格 (円)',
+                        data: [54000, 550000],
+                        backgroundColor: [chartColors.primary, chartColors.secondary],
+                        borderColor: [chartColors.primaryBorder, chartColors.secondaryBorder],
+                        borderWidth: 1
+                    }]
+                }
+            },
+            project: {
+                title: '実務効率化プロジェクト伴走',
+                description: '高付加価値コンサルティングの中核。プロジェクトの範囲や複雑性に応じて価格は大きく変動します。中小企業向けの現実的なプロジェクトでは100万円〜500万円が想定されます。',
+                chartData: {
+                    labels: ['簡易PoC (検証)', '標準プロジェクト (コンサル)'],
+                    datasets: [{
+                        label: '価格 (円)',
+                        data: [1250000, 5500000],
+                        backgroundColor: [chartColors.primary, chartColors.secondary],
+                        borderColor: [chartColors.primaryBorder, chartColors.secondaryBorder],
+                        borderWidth: 1
+                    }]
+                }
+            },
+            retainer: {
+                title: 'AI活用定着サポート (月額顧問)',
+                description: '長期的なROIを確保し、「導入したものの定着しない」という顧客の懸念を払拭するサービス。サポート内容に応じて価格は変動します。',
+                chartData: {
+                    labels: ['ベーシック (相談)', 'スタンダード (伴走)', 'プレミアム (戦略)'],
+                    datasets: [{
+                        label: '月額価格 (円)',
+                        data: [75000, 225000, 500000],
+                        backgroundColor: [chartColors.primary, chartColors.secondary, chartColors.tertiary],
+                        borderColor: [chartColors.primaryBorder, chartColors.secondaryBorder, chartColors.tertiaryBorder],
+                        borderWidth: 1
+                    }]
+                }
+            }
+        };
+        
+        const defaultTooltipCallback = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) { return label.join(' '); }
+                    return label;
+                },
+                label: function(context) {
+                    let label = context.dataset.label || '';
+                    if (label) { label += ': '; }
+                    if (context.parsed.y !== null) {
+                        label += new Intl.NumberFormat('ja-JP', { style: 'currency', currency: 'JPY' }).format(context.parsed.y);
+                    }
+                    return label;
+                }
+            }
+        };
+
+        let benchmarkChart;
+
+        function updateBenchmarkSection(key) {
+            const data = benchmarkData[key];
+            const textContainer = document.getElementById('benchmark-text');
+            
+            textContainer.innerHTML = `
+                <h3 class="text-2xl font-bold text-gray-900">${data.title}</h3>
+                <p class="mt-4 text-gray-600">${data.description}</p>
+            `;
+
+            benchmarkChart.data = data.chartData;
+            benchmarkChart.update();
+        }
+
+        window.onload = function() {
+            new Chart(document.getElementById('smeAdoptionChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['活用している', '活用していない'],
+                    datasets: [{ data: [5.7, 94.3], backgroundColor: [chartColors.primary, chartColors.background], borderColor: chartColors.white, borderWidth: 4 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' }, tooltip: defaultTooltipCallback } }
+            });
+
+            new Chart(document.getElementById('smeInterestChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['今後活用を検討', '活用は検討しない'],
+                    datasets: [{ data: [29.6, 70.4], backgroundColor: [chartColors.secondary, chartColors.background], borderColor: chartColors.white, borderWidth: 4 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' }, tooltip: defaultTooltipCallback } }
+            });
+
+            const ctxBenchmark = document.getElementById('benchmarkChart').getContext('2d');
+            benchmarkChart = new Chart(ctxBenchmark, {
+                type: 'bar',
+                data: {},
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: { x: { beginAtZero: true, ticks: { callback: (value) => new Intl.NumberFormat('ja-JP').format(value) + '円' } } },
+                    plugins: { legend: { display: false }, tooltip: defaultTooltipCallback }
+                }
+            });
+
+            updateBenchmarkSection('consult');
+
+            const tabs = document.querySelectorAll('.tab-button');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    const key = tab.id.split('-')[1];
+                    updateBenchmarkSection(key);
+                });
+            });
+            
+            const sizeFilters = document.querySelectorAll('.size-filter-btn');
+            const priceMatrix = document.getElementById('price-matrix');
+            const allCells = priceMatrix.querySelectorAll('th[data-col-size], td[data-col-size]');
+
+            sizeFilters.forEach(button => {
+                button.addEventListener('click', () => {
+                    sizeFilters.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    const size = button.dataset.size;
+                    
+                    allCells.forEach(cell => {
+                        cell.style.backgroundColor = '';
+                        cell.style.color = '';
+                    });
+                    
+                    if (size !== 'all') {
+                        const cellsToHighlight = priceMatrix.querySelectorAll(`[data-col-size="${size}"]`);
+                        cellsToHighlight.forEach(cell => {
+                            cell.style.backgroundColor = '#cffafe'; // cyan-100
+                            if(cell.tagName === 'TH') {
+                                cell.style.color = '#164e63'; // cyan-900
+                            }
+                        });
+                    }
+                });
+                // Add common styles to filter buttons
+                button.classList.add('px-3', 'py-1', 'sm:px-4', 'sm:py-2', 'border', 'border-gray-300', 'rounded-full', 'text-sm', 'font-medium', 'text-gray-700', 'hover:bg-gray-100', 'transition');
+                if(button.classList.contains('active')) {
+                     button.classList.add('bg-cyan-600', 'text-white', 'border-cyan-600');
+                     button.classList.remove('text-gray-700', 'hover:bg-gray-100');
+                }
+            });
+        };
+    </script>
+</body>
+</html>
