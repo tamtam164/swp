@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>株式会社日光様 AI活用セミナー戦略概要</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Custom Palette based on "Vibrant/Professional" */
+        :root {
+            --color-primary: #1E3A8A;   /* Deep Blue */
+            --color-secondary: #F97316; /* Vibrant Orange */
+            --color-accent: #06B6D4;    /* Cyan */
+            --color-bg: #F3F4F6;        /* Light Gray */
+            --color-card: #FFFFFF;      /* White */
+            --color-text-main: #1F2937; /* Dark Gray */
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text-main);
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        /* Timeline Styles */
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            border-left: 4px solid var(--color-primary);
+            margin-bottom: 2rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -0.6rem;
+            top: 0;
+            width: 1.2rem;
+            height: 1.2rem;
+            background-color: var(--color-secondary);
+            border-radius: 50%;
+        }
+    </style>
+    <!-- 
+        Palette Used: "Future Professional"
+        Primary: #1E3A8A (Deep Blue)
+        Secondary: #F97316 (Vibrant Orange)
+        Accent: #06B6D4 (Cyan)
+        Based on the request for a vibrant, professional look appropriate for a corporate seminar strategy.
+    -->
+    <!-- 
+        Source Material Analysis Summary:
+        1. Context: Nikko Co., Ltd. AI Seminar (30 mins).
+        2. Audience: HQ Sales (Skeptical of routine AI) & Himeji Factory (Unsure where to start).
+        3. Strategy: Shift from "Individual Shadow AI" to "Organizational Unified Platform".
+        4. Visuals Selected: 
+           - Radar Chart: To contrast the different needs/states of HQ vs Factory.
+           - Grouped Bar Chart: To show the benefits of Organization vs Individual.
+           - Horizontal Bar Chart: To visualize the "Time Saved" impact of the proposed Demos.
+           - Timeline: To show the 30-min flow.
+        5. No SVG/Mermaid used. All Canvas/CSS.
+    -->
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- Header -->
+    <header class="bg-blue-900 text-white p-8 rounded-xl shadow-lg mb-8 text-center">
+        <h1 class="text-3xl md:text-5xl font-bold mb-4">株式会社日光様 AI活用セミナー戦略</h1>
+        <p class="text-xl text-orange-400 font-semibold">「個」の独学から「組織」の武器へ</p>
+        <p class="mt-2 text-blue-200">2026年3月開催 | 講師: 田村 氏</p>
+    </header>
+
+    <!-- Section 1: Core Concept -->
+    <section class="mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold text-blue-900 mb-4">コンセプト: 組織的活用の必要性</h2>
+                <p class="mb-4 leading-relaxed">
+                    現状、社員の皆様は個別にAIを利用（または挫折）しており、セキュリティリスクや知識の格差（属人化）が生じています。
+                    本セミナーの核となるメッセージは、会社として統一プラットフォームを導入することで、<b>「守り（セキュリティ）」</b>を固めつつ、<b>「攻め（ナレッジ共有）」</b>を最大化することです。
+                </p>
+                <ul class="list-none space-y-2">
+                    <li class="flex items-center"><span class="text-2xl mr-2">🛡️</span> <span><b>セキュリティ:</b> 社外秘情報の安全な活用</span></li>
+                    <li class="flex items-center"><span class="text-2xl mr-2">🧠</span> <span><b>知財蓄積:</b> 暗黙知を形式知へ変換</span></li>
+                    <li class="flex items-center"><span class="text-2xl mr-2">⚖️</span> <span><b>格差解消:</b> 全員が優秀なアシスタントを持つ</span></li>
+                </ul>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
+                <h3 class="text-lg font-bold text-gray-700 mb-2 text-center">個人利用 vs 組織利用の価値比較</h3>
+                <div class="chart-container">
+                    <canvas id="valueChart"></canvas>
+                </div>
+                <p class="text-sm text-gray-500 mt-2 text-center">組織化することで、リスクを下げつつ資産価値を高める</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Audience Analysis -->
+    <section class="mb-12">
+        <h2 class="text-3xl font-bold text-blue-900 mb-6 border-b-4 border-orange-500 inline-block">聴講者分析と戦略アプローチ</h2>
+        <p class="mb-6 text-gray-700">
+            本社（営業）と姫路（製造現場）では、AIに対する「現在地」と「課題感」が異なります。それぞれの特性に合わせたデモを展開します。
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Audience Radar Chart -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-bold text-gray-700 mb-2 text-center">拠点別：現状の課題とポテンシャル</h3>
+                <div class="chart-container">
+                    <canvas id="audienceRadar"></canvas>
+                </div>
+                <div class="mt-4 text-sm text-gray-600">
+                    <p><span class="text-blue-600 font-bold">● 本社（営業）:</span> 「定型業務には使えない」という懐疑心があるが、企画・提案力へのポテンシャルは高い。</p>
+                    <p><span class="text-orange-600 font-bold">● 姫路（現場）:</span> 用途が不明確だが、マニュアル検索などの即効性ある解決策へのニーズが高い。</p>
+                </div>
+            </div>
+
+            <!-- Strategy Cards -->
+            <div class="space-y-6">
+                <!-- HQ Strategy -->
+                <div class="bg-blue-50 p-6 rounded-lg border-l-8 border-blue-600">
+                    <h3 class="text-xl font-bold text-blue-900 mb-2">🏢 3/4 本社（営業職）戦略</h3>
+                    <p class="font-bold text-gray-700 mb-2">ターゲット: 「AIは定型業務には不向き」と経験した社員</p>
+                    <p class="mb-4">誤解を解き、AIを<b>「思考の壁打ちパートナー」</b>として再定義する。</p>
+                    <div class="bg-white p-4 rounded shadow-sm">
+                        <h4 class="font-bold text-blue-800 border-b pb-1 mb-2">実施デモ（思考の拡張）</h4>
+                        <ul class="text-sm space-y-1">
+                            <li>🔍 <b>顧客深掘りリサーチ:</b> 提案の切り口を3案瞬時に出す</li>
+                            <li>🗣️ <b>商談シミュレーション:</b> 厳しい顧客役AIとのロープレ</li>
+                            <li>📝 <b>非定型ドキュメント:</b> メモからのお礼メール生成</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Himeji Strategy -->
+                <div class="bg-orange-50 p-6 rounded-lg border-l-8 border-orange-500">
+                    <h3 class="text-xl font-bold text-orange-900 mb-2">🏭 3/6 姫路（製造現場）戦略</h3>
+                    <p class="font-bold text-gray-700 mb-2">ターゲット: 「何に使えばいいか分からない」現場社員</p>
+                    <p class="mb-4">元現場監督の経験から共感を呼び、<b>「ナレッジの即時検索」</b>を見せる。</p>
+                    <div class="bg-white p-4 rounded shadow-sm">
+                        <h4 class="font-bold text-orange-800 border-b pb-1 mb-2">実施デモ（NotebookLM活用）</h4>
+                        <ul class="text-sm space-y-1">
+                            <li>📚 <b>高速マニュアル検索:</b> エラー処置・手順の即時抽出</li>
+                            <li>⚠️ <b>顧客傾向ノート:</b> 過去トラブル・注意点の引き出し</li>
+                            <li>📋 <b>報告の自動構造化:</b> 音声メモから日報作成</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Impact Projection -->
+    <section class="mb-12">
+        <h2 class="text-3xl font-bold text-blue-900 mb-6 border-b-4 border-orange-500 inline-block">導入後のインパクト予測</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <p class="mb-4">
+                    適切なデモを通じて「使えない」という誤解を解くことで、業務時間の配分が劇的に変化します。
+                    「探す・まとめる」時間を削減し、<b>「考える・創る」</b>時間へのシフトを目指します。
+                </p>
+                <div class="chart-container">
+                    <canvas id="impactChart"></canvas>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">経営層へのパス（3/4 本社セミナー後）</h3>
+                <p class="mb-4">
+                    セミナー直後の経営層面談に向け、以下の成果を印象付けます。
+                </p>
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <span class="text-3xl mr-3">🚀</span>
+                        <div>
+                            <h4 class="font-bold">現場の即効性</h4>
+                            <p class="text-sm text-gray-600">「これなら使える」という現場の実感値。</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="text-3xl mr-3">🔐</span>
+                        <div>
+                            <h4 class="font-bold">基盤整備の必然性</h4>
+                            <p class="text-sm text-gray-600">セキュリティと共有ルールなしに、この効果は永続しないことの提示。</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="text-3xl mr-3">📈</span>
+                        <div>
+                            <h4 class="font-bold">未来への投資</h4>
+                            <p class="text-sm text-gray-600">AI活用は「便利ツール」導入ではなく「組織能力の拡張」であるという認識。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Seminar Roadmap -->
+    <section class="bg-white p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold text-blue-900 mb-8 text-center">30分セミナー タイムライン構成</h2>
+        <div class="max-w-3xl mx-auto">
+            
+            <!-- Item 1 -->
+            <div class="timeline-item">
+                <div class="absolute -left-10 top-0 bg-blue-100 text-blue-800 font-bold py-1 px-3 rounded-full">0-5分</div>
+                <h3 class="text-xl font-bold text-gray-800">① 導入：掴みとバトンタッチ</h3>
+                <p class="text-gray-600 mt-1">富山氏のDC資料作成事例からスタート。「AIはプロの標準ツール」という認識合わせ。</p>
+                <p class="text-sm text-orange-600 font-bold mt-2">Point: 自身の「元現場監督」経験による共感形成（特に姫路）。</p>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="timeline-item">
+                <div class="absolute -left-10 top-0 bg-blue-100 text-blue-800 font-bold py-1 px-3 rounded-full">5-12分</div>
+                <h3 class="text-xl font-bold text-gray-800">② 核心：なぜ今「組織」なのか</h3>
+                <p class="text-gray-600 mt-1">個人利用の限界とリスクを提示。会社公式基盤による「セキュリティ」「知財化」「格差解消」のメリットを解説。</p>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="timeline-item">
+                <div class="absolute -left-10 top-0 bg-blue-100 text-blue-800 font-bold py-1 px-3 rounded-full">12-25分</div>
+                <h3 class="text-xl font-bold text-gray-800">③ 実演：未来へのデモ</h3>
+                <p class="text-gray-600 mt-1">拠点別にカスタマイズしたデモを実施。</p>
+                <ul class="list-disc ml-5 mt-2 text-sm text-gray-600">
+                    <li><b>本社:</b> リサーチ・壁打ち・非定型作成</li>
+                    <li><b>姫路:</b> マニュアル検索・傾向分析・報告作成</li>
+                </ul>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="timeline-item border-l-0">
+                <div class="absolute -left-10 top-0 bg-blue-100 text-blue-800 font-bold py-1 px-3 rounded-full">25-30分</div>
+                <div class="pl-8 border-l-4 border-orange-500">
+                    <h3 class="text-xl font-bold text-gray-800">④ 結び：今日からのアクション</h3>
+                    <p class="text-gray-600 mt-1">「完璧を求めず、まずは触れる」。自分ならどう使うか、という問いかけで締めくくり。</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mt-12 text-center text-gray-500 text-sm">
+        <p>Generated for Nikko Co., Ltd. AI Seminar Strategy Planning</p>
+    </footer>
+
+    <script>
+        // --- Chart 1: Value Comparison (Grouped Bar) ---
+        const ctxValue = document.getElementById('valueChart').getContext('2d');
+        
+        // Helper to process labels for wrapping (max 16 chars)
+        function processLabels(labels) {
+            return labels.map(label => {
+                if (label.length > 16) {
+                    const words = label.split(' ');
+                    const lines = [];
+                    let currentLine = words[0];
+                    for (let i = 1; i < words.length; i++) {
+                        if ((currentLine + " " + words[i]).length < 16) {
+                            currentLine += " " + words[i];
+                        } else {
+                            lines.push(currentLine);
+                            currentLine = words[i];
+                        }
+                    }
+                    lines.push(currentLine);
+                    return lines;
+                }
+                return label;
+            });
+        }
+
+        // Common Tooltip Config
+        const commonTooltip = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        new Chart(ctxValue, {
+            type: 'bar',
+            data: {
+                labels: processLabels(['セキュリティリスク', 'ナレッジ共有度', '業務効率化', 'スキル標準化']),
+                datasets: [
+                    {
+                        label: '個人利用 (現状)',
+                        data: [85, 20, 30, 10], // High Risk, Low Sharing
+                        backgroundColor: '#9CA3AF', // Gray
+                        borderRadius: 4
+                    },
+                    {
+                        label: '組織利用 (理想)',
+                        data: [15, 90, 85, 80], // Low Risk, High Sharing
+                        backgroundColor: '#1E3A8A', // Deep Blue
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: commonTooltip,
+                    legend: { position: 'bottom' }
+                },
+                scales: {
+                    y: { beginAtZero: true, max: 100, title: { display: true, text: 'スコア (イメージ値)' } }
+                }
+            }
+        });
+
+        // --- Chart 2: Audience Radar ---
+        const ctxRadar = document.getElementById('audienceRadar').getContext('2d');
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: processLabels(['定型業務への期待', '企画・提案ポテンシャル', 'マニュアル検索ニーズ', '現状の懐疑心', 'AIリテラシー']),
+                datasets: [
+                    {
+                        label: '本社 (営業)',
+                        data: [20, 90, 40, 80, 50],
+                        borderColor: '#1E3A8A',
+                        backgroundColor: 'rgba(30, 58, 138, 0.2)',
+                        pointBackgroundColor: '#1E3A8A'
+                    },
+                    {
+                        label: '姫路 (現場)',
+                        data: [40, 30, 95, 30, 20], // High need for manual search
+                        borderColor: '#F97316',
+                        backgroundColor: 'rgba(249, 115, 22, 0.2)',
+                        pointBackgroundColor: '#F97316'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: commonTooltip,
+                    legend: { position: 'bottom' }
+                },
+                scales: {
+                    r: {
+                        angleLines: { color: '#E5E7EB' },
+                        grid: { color: '#E5E7EB' },
+                        pointLabels: { font: { size: 11 } },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                }
+            }
+        });
+
+        // --- Chart 3: Impact (Horizontal Bar) ---
+        const ctxImpact = document.getElementById('impactChart').getContext('2d');
+        new Chart(ctxImpact, {
+            type: 'bar',
+            data: {
+                labels: processLabels(['資料・情報検索', 'ドキュメント作成', '企画・壁打ち', 'トラブル対応検討']),
+                datasets: [
+                    {
+                        label: '従来 (人力)',
+                        data: [60, 50, 20, 40], // High manual effort
+                        backgroundColor: '#9CA3AF',
+                        stack: 'Stack 0'
+                    },
+                    {
+                        label: 'AI活用後 (短縮)',
+                        data: [10, 15, 5, 10], // Reduced effort
+                        backgroundColor: '#06B6D4', // Cyan
+                        stack: 'Stack 1'
+                    },
+                    {
+                        label: '創出される付加価値時間',
+                        data: [50, 35, 15, 30], // Gained time
+                        backgroundColor: '#F97316', // Orange
+                        stack: 'Stack 1'
+                    }
+                ]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: commonTooltip,
+                    legend: { position: 'bottom' },
+                    title: { display: true, text: 'AI導入による業務時間の質的転換 (イメージ)' }
+                },
+                scales: {
+                    x: { stacked: false, title: { display: true, text: '分 / 1タスクあたり' } },
+                    y: { stacked: true }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
